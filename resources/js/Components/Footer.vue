@@ -5,7 +5,7 @@
            <div class="row g-5">
                <div class="col-lg-4 col-md-6">
                    <Link href="/">
-                    <img class="w-[14rem]" src="/assets/img/logo.png" />
+                    <img class="w-[14rem]" src="/assets/img/logowhite.png" />
                    </Link>
                    <p class="mt-4 text-light">
 WEBGENIX – Crafting digital excellence with 6+ years of experience in e-commerce, mobile apps, QR systems, and scalable software tailored for businesses of all sizes.

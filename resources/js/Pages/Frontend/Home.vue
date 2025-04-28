@@ -172,7 +172,7 @@ onUpdated(() => {
                     <div class="project-img">
                         <img src="/assets/img/houselashes.jpeg" class="img-fluid w-100 rounded" alt="Houselashes Website Preview">
                         <div class="project-content">
-                            <a href="#" class="text-center">
+                            <a href="https://houselashes.shop/" class="text-center">
                                 <h4 class="text-secondary">Houselashes</h4>
                                 <p class="m-0 text-white">Beauty-focused online store</p>
                             </a>
@@ -211,7 +211,7 @@ onUpdated(() => {
                     <div class="project-img">
                         <img src="/assets/img/menu.jpeg" class="img-fluid w-100 rounded" alt="Tostiva QR Menu Preview">
                         <div class="project-content">
-                            <a href="#" class="text-center">
+                            <a href="https://tostiva.com/" class="text-center">
                                 <h4 class="text-secondary">Tostiva</h4>
                                 <p class="m-0 text-white">Interactive QR code-based restaurant menu</p>
                             </a>
