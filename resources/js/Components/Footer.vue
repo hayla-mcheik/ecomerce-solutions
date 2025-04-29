@@ -11,7 +11,9 @@
 WEBGENIX – Crafting digital excellence with 6+ years of experience in e-commerce, mobile apps, QR systems, and scalable software tailored for businesses of all sizes.
 </p>
 
-                   <div class="d-flex hightech-link">
+
+
+                   <div class="d-flex hightech-link social">
                        <a href="https://www.facebook.com/profile.php?id=61551658036687" target="_blank" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-facebook-f text-primary"></i></a>
                        <a href="https://www.instagram.com/hayla_mcheik/" target="_blank" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-instagram text-primary"></i></a>
                        <a href="https://linkedin.com/in/hayla-mcheik" target="_blank"  class="btn-light nav-fill btn btn-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
