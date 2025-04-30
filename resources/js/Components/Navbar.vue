@@ -31,8 +31,10 @@ onMounted(() => {
           <img class="w-[14rem]" src="/assets/img/logo.png" />
         </Link>
         <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <span class="navbar-toggler-icon">
+        <span></span> <!-- Middle line -->
+    </span>
+</button>
         <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
           <div class="navbar-nav ms-auto mx-xl-auto p-0">
             <Link href="/" class="nav-item nav-link font-bold text-sm px-5" :class="{'active text-secondary' : $page.url === '/'}">Home</Link>
@@ -46,11 +48,13 @@ onMounted(() => {
 
           <div class="d-flex flex-column pe-4">
             <!-- Desktop Burger Button -->
-            <button @click="toggleDrawer" class="burger-btn bg-transparent border-0 p-0">
-              <div class="burger-line w-6 h-0.5 bg-black mb-1.5"></div>
-              <div class="burger-line w-6 h-0.5 bg-black mb-1.5"></div>
-              <div class="burger-line w-6 h-0.5 bg-black"></div>
-            </button>
+            <button @click="toggleDrawer" class="burger-btn bg-transparent border-0 p-0 relative group">
+  <div class="flex flex-col items-end justify-center w-8 h-8 transition-all duration-300 group-hover:scale-110">
+    <div class="burger-line w-6 h-0.5 bg-black mb-1.5 transition-all duration-300 origin-left group-hover:bg-blue-500 group-hover:w-7 group-hover:rotate-12 group-hover:translate-y-1"></div>
+    <div class="burger-line w-5 h-0.5 bg-black mb-1.5 transition-all duration-300 group-hover:bg-blue-500 group-hover:opacity-0"></div>
+    <div class="burger-line w-4 h-0.5 bg-black transition-all duration-300 origin-left group-hover:bg-blue-500 group-hover:w-7 group-hover:-rotate-12 group-hover:-translate-y-1"></div>
+  </div>
+</button>
           </div>
         </div>
       </nav>
@@ -105,6 +109,53 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* Custom navbar toggler icon */
+.navbar-dark .navbar-toggler-icon {
+    background-image: none; /* Remove default SVG */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    transition: all 0.3s ease;
+    filter: brightness(0.5);
+    border: none;
+}
+
+.navbar-dark .navbar-toggler-icon::before,
+.navbar-dark .navbar-toggler-icon::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: #000;
+    transition: all 0.3s ease;
+}
+
+/* Top line */
+.navbar-dark .navbar-toggler-icon::before {
+    width: 24px;
+    margin-bottom: 6px;
+    transform-origin: left;
+}
+
+/* Middle line */
+.navbar-dark .navbar-toggler-icon span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: #000;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+/* Bottom line */
+.navbar-dark .navbar-toggler-icon::after {
+    width: 16px;
+}
+
 .navbar .navbar-nav .nav-link {
   visibility: visible;
 }
