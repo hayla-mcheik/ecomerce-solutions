@@ -15,7 +15,7 @@ WEBGENIX – Crafting digital excellence with 6+ years of experience in e-commer
                        <a href="https://www.instagram.com/hayla_mcheik/" target="_blank" class="btn-light nav-fill btn btn-square rounded-circle me-2"><i class="fab fa-instagram text-primary"></i></a>
                        <a href="https://linkedin.com/in/hayla-mcheik" target="_blank"  class="btn-light nav-fill btn btn-square rounded-circle me-0"><i class="fab fa-linkedin-in text-primary"></i></a>
     
-        </div>
+                  </div>
                </div>
                <div class="col-lg-4 col-md-6 mx-auto">
                    <a href="#" class="h3 text-secondary">Short Link</a>
