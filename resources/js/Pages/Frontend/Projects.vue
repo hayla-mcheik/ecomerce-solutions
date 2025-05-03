@@ -95,7 +95,7 @@
                     <div class="project-img">
                         <img src="/assets/img/menu.jpeg" class="img-fluid w-100 rounded" alt="Tostiva QR Menu Preview">
                         <div class="project-content">
-                            <a href="https://tostiva.com/" class="text-center">
+                            <a href="https://tablosoftware.pro/" class="text-center">
                                 <h4 class="text-secondary">Tostiva</h4>
                                 <p class="m-0 text-white">Interactive QR code-based restaurant menu</p>
                             </a>
