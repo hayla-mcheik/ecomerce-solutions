@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FrontendController extends Controller
 {
-    public function home()
+      public function home() 
     {
-        return Inertia::render('Frontend/Home');
+       $categories = Category::all();
+       $featuredproducts = Product::where('is_featured',1)->get();
+       $topsellingproducts = Product::where('top_selling',1)->get();
+        $sliders = Slider::all();
+       return Inertia::render('Frontend/Home' , [
+        'featuredproducts' => $featuredproducts,
+        'topsellingproducts' => $topsellingproducts,
+        'categories' => $categories,
+        'sliders' => $sliders
+       ]);
     }
 
     public function services()
@@ -23,6 +35,46 @@ class FrontendController extends Controller
     }
 
 
+
+public function products()
+{
+    $categories = Category::all();
+    $products = Product::all();
+    return Inertia::render('Frontend/Products', [
+        'categories' => $categories,
+        'products' => $products
+    ]);
+}
+
+
+
+public function productDetails($id)
+{
+    $product = Product::findOrFail($id);
+    return Inertia::render('Frontend/ProductDetails',[
+        'product' => $product
+    ]);
+}
+
+public function cart()
+{
+    return Inertia::render('Frontend/Cart');
+}
+
+public function checkout()
+{
+    return Inertia::render('Frontend/Checkout');
+}
+
+public function faq()
+{
+    return Inertia::render('Frontend/Faq');
+}
+
+public function wishlist()
+{
+       return Inertia::render('Frontend/Wishlist'); 
+}
 
     public function about()
     {

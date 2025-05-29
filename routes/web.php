@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
@@ -24,13 +29,29 @@ Route::get('/about','about')->name('about.index');
 Route::get('/contact','contact')->name('contact.index');
 Route::get('/services','services')->name('services.index');
 Route::get('/projects','projects')->name('projects.index');
+Route::get('/products','products')->name('products.index');
+Route::get('/product-details/{id}','productDetails')->name('productDetails.index');
+Route::get('/cart','cart')->name('cart.index');
+Route::get('/checkout','checkout')->name('checkout.index');
+Route::get('/faq','faq')->name('faq.index');
+Route::get('/wishlist','wishlist')->name('wishlist.index');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth','verified'])->prefix('admin')
+->controller(AdminController::class)
+->group(function () {
+    Route::get('/dashboard','index')->name('dashboard');
+        Route::resource('products',ProductController::class);
+    Route::resource('categories',CategoriesController::class);
+    Route::resource('sliders',SliderController::class);
+});
+
 
 Route::middleware('auth')->group(function () {
+    Route::post('/cart/add', [CartController::class, 'addToCart']);
+    Route::get('/cart/count', [CartController::class, 'getCartCount']);
+    Route::get('/cart/items', [CartController::class, 'getCartItems']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -1,173 +1,191 @@
 <script setup>
 import { onMounted } from 'vue';
-import { initCarousels } from 'flowbite';
-
+// Import Swiper modules
+import Swiper from 'swiper';
+import { Autoplay, EffectFade , Navigation , Pagination} from 'swiper/modules';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
 onMounted(() => {
-  initCarousels();
+new Swiper(".say-about-slider", {
+      modules : [Autoplay , Pagination , Navigation],
+    slidesPerView: 1,
+    spaceBetween: 40,
+    loop: true,
+    navigation: {
+      nextEl: ".about-next-btn",
+      prevEl: ".about-prev-btn",
+    },
+    pagination: {
+      el: ".swiper-pagination2",
+      clickable: true,
+    },
+    breakpoints: {
+      280: {
+        slidesPerView: 1,
+        spaceBetween: 15,
+      },
+      386: {
+        slidesPerView: 1,
+        spaceBetween: 30,
+      },
+      576: {
+        slidesPerView: 1,
+      },
+      768: {
+        slidesPerView: 2,
+      },
+      992: {
+        slidesPerView: 2,
+      },
+      1200: {
+        slidesPerView: 3,
+      },
+      1400: {
+        slidesPerView: 3,
+      },
+    },
+  });
 });
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Client Name",
-    profession: "Profession",
-    content: "Lorem ipsum dolor sit amet elit. Sed efficitur quis purus ut interdum aliquam dolor eget urna. Nam volutpat libero sit amet leo cursus, ac viverra eros morbi quis quam mi.",
-    image: "img/testimonial-1.jpg",
-    rating: 5
-  },
-  {
-    id: 2,
-    name: "Client Name",
-    profession: "Profession",
-    content: "Lorem ipsum dolor sit amet elit. Sed efficitur quis purus ut interdum aliquam dolor eget urna. Nam volutpat libero sit amet leo cursus, ac viverra eros morbi quis quam mi.",
-    image: "img/testimonial-2.jpg",
-    rating: 5
-  },
-  {
-    id: 3,
-    name: "Client Name",
-    profession: "Profession",
-    content: "Lorem ipsum dolor sit amet elit. Sed efficitur quis purus ut interdum aliquam dolor eget urna. Nam volutpat libero sit amet leo cursus, ac viverra eros morbi quis quam mi.",
-    image: "img/testimonial-3.jpg",
-    rating: 5
-  },
-  {
-    id: 4,
-    name: "Client Name",
-    profession: "Profession",
-    content: "Lorem ipsum dolor sit amet elit. Sed efficitur quis purus ut interdum aliquam dolor eget urna. Nam volutpat libero sit amet leo cursus, ac viverra eros morbi quis quam mi.",
-    image: "img/testimonial-4.jpg",
-    rating: 5
-  }
-];
+
 </script>
 
 <template>
-  <!-- Testimonial Start -->
-  <div class="container-fluid testimonial py-5 mb-5">
-    <div class="container">
-      <div class="text-center mx-auto pb-5" style="max-width: 600px;">
-        <h5 class="text-primary">Our Testimonial</h5>
-        <h1>Our Client Saying!</h1>
-      </div>
-      
-      <!-- Flowbite Carousel -->
-      <div id="testimonial-carousel" class="relative" data-carousel="static">
-        <!-- Carousel wrapper -->
-        <div class="relative overflow-hidden">
-          <!-- Testimonial Items -->
-          <div v-for="(testimonial, index) in testimonials" 
-               :key="testimonial.id"
-               class="hidden duration-700 ease-in-out" 
-               :data-carousel-item="index === 0 ? 'active' : ''">
-            <div class="testimonial-item border p-4">
-              <div class="d-flex align-items-center">
-                <div>
-                  <img :src="testimonial.image" 
-                       class="rounded-circle" 
-                       style="width: 80px; height: 80px; object-fit: cover" 
-                       :alt="testimonial.name">
+    <div class="say-about-section mb-110">
+        <img src="assets/img/home1/testimonial-vector-2.png" alt="" class="vector3">
+        <img src="assets/img/home1/testimonial-vector-1.png" alt="" class="vector4">
+         <div class="container-fluid p-0">
+            <div class="section-title2 style-3">
+                <h3>They Say About Our Product</h3>
+                <div class="slider-btn">
+                    <div class="about-prev-btn">
+                        <i class="bi bi-arrow-left"></i>
+                    </div>
+                    <div class="about-next-btn">
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
                 </div>
-                <div class="ms-4">
-                  <h4 class="text-secondary">{{ testimonial.name }}</h4>
-                  <p class="m-0 pb-3">{{ testimonial.profession }}</p>
-                  <div class="d-flex pe-5">
-                    <i v-for="star in 5" 
-                       :key="star" 
-                       class="fas fa-star me-1 text-primary"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="border-top mt-4 pt-3">
-                <p class="mb-0">{{ testimonial.content }}</p>
-              </div>
             </div>
-          </div>
-        </div>
-        
-        <!-- Slider indicators -->
-        <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-0 left-1/2">
-          <button v-for="(testimonial, index) in testimonials" 
-                  :key="'indicator-'+testimonial.id"
-                  type="button" 
-                  class="w-3 h-3 rounded-full bg-gray-300 hover:bg-primary" 
-                  :aria-current="index === 0" 
-                  :aria-label="'Slide ' + (index + 1)" 
-                  :data-carousel-slide-to="index"></button>
-        </div>
-        
-        <!-- Slider controls -->
-        <button type="button" 
-                class="absolute top-1/2 -left-4 z-30 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-lg hover:bg-gray-100 transform -translate-y-1/2" 
-                data-carousel-prev>
-          <i class="fas fa-chevron-left text-gray-600"></i>
-          <span class="sr-only">Previous</span>
-        </button>
-        <button type="button" 
-                class="absolute top-1/2 -right-4 z-30 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-lg hover:bg-gray-100 transform -translate-y-1/2" 
-                data-carousel-next>
-          <i class="fas fa-chevron-right text-gray-600"></i>
-          <span class="sr-only">Next</span>
-        </button>
-      </div>
+            <div class="say-about-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="swiper say-about-slider">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="say-about-card">
+                                        <div class="say-about-card-top">
+                                            <ul>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                            </ul>
+                                        </div>
+                                        <p>“I was recommended snaga from a dear friendest onest Gives energy, strength & mostly youm motivationt goint and WOW!!! Gives energy, strength & mostlydat youm motivation”</p>
+                                        <div class="say-about-card-bottom">
+                                            <div class="author-area">
+                                                <div class="author-img">
+                                                    <img src="assets/img/home2/testimonial-author-img1.png" alt="">
+                                                </div>
+                                                <div class="author">
+                                                    <h5>Jayden Carter</h5>
+                                                    <p>Manager at Global Business</p>
+                                                </div>
+                                            </div>
+                                            <div class="quote">
+                                                <svg width="59" height="41" viewBox="0 0 59 41" xmlns="http://www.w3.org/2000/svg">
+                                                    <g opacity="0.05">
+                                                        <path
+                                                            d="M27.8217 13.4959C27.7944 13.2156 27.7396 12.9284 27.6712 12.6481C27.062 5.56517 21.1144 0 13.8664 0C6.2077 0 0 6.20099 0 13.8514C0 21.283 5.85865 27.3268 13.2093 27.6686C11.4367 30.4649 8.58264 32.7278 5.09894 33.7944L4.98259 33.8286C3.36735 34.3208 2.25175 35.8933 2.40232 37.6435C2.57342 39.6604 4.34608 41.1576 6.37196 40.9867C12.3333 40.4808 18.2946 37.4384 22.3464 32.4954C24.3791 30.0341 25.9533 27.1353 26.9114 23.9767C27.8765 20.8249 28.205 17.4202 27.8765 14.0633L27.8217 13.4959Z" />
+                                                        <path
+                                                            d="M58.8217 13.4959C58.7944 13.2156 58.7396 12.9284 58.6712 12.6481C58.062 5.56517 52.1144 0 44.8664 0C37.2077 0 31 6.20099 31 13.8514C31 21.283 36.8586 27.3268 44.2093 27.6686C42.4367 30.4649 39.5826 32.7278 36.0989 33.7944L35.9826 33.8286C34.3674 34.3208 33.2517 35.8933 33.4023 37.6435C33.5734 39.6604 35.3461 41.1576 37.372 40.9867C43.3333 40.4808 49.2946 37.4384 53.3464 32.4954C55.3791 30.0341 56.9533 27.1353 57.9114 23.9767C58.8765 20.8249 59.205 17.4202 58.8765 14.0633L58.8217 13.4959Z" />
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="say-about-card">
+                                        <div class="say-about-card-top">
+                                            <ul>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                            </ul>
+                                        </div>
+                                        <p>“I was recommended snaga from a dear friendest onest Gives energy, strength & mostly youm motivationt goint and WOW!!! Gives energy, strength & mostlydat youm motivation”</p>
+                                        <div class="say-about-card-bottom">
+                                            <div class="author-area">
+                                                <div class="author-img">
+                                                    <img src="assets/img/home2/testimonial-author-img2.png" alt="">
+                                                </div>
+                                                <div class="author">
+                                                    <h5>Colton Roman</h5>
+                                                    <p>Ceo at Global Business</p>
+                                                </div>
+                                            </div>
+                                            <div class="quote">
+                                                <svg width="59" height="41" viewBox="0 0 59 41" xmlns="http://www.w3.org/2000/svg">
+                                                    <g opacity="0.05">
+                                                        <path
+                                                            d="M27.8217 13.4959C27.7944 13.2156 27.7396 12.9284 27.6712 12.6481C27.062 5.56517 21.1144 0 13.8664 0C6.2077 0 0 6.20099 0 13.8514C0 21.283 5.85865 27.3268 13.2093 27.6686C11.4367 30.4649 8.58264 32.7278 5.09894 33.7944L4.98259 33.8286C3.36735 34.3208 2.25175 35.8933 2.40232 37.6435C2.57342 39.6604 4.34608 41.1576 6.37196 40.9867C12.3333 40.4808 18.2946 37.4384 22.3464 32.4954C24.3791 30.0341 25.9533 27.1353 26.9114 23.9767C27.8765 20.8249 28.205 17.4202 27.8765 14.0633L27.8217 13.4959Z" />
+                                                        <path
+                                                            d="M58.8217 13.4959C58.7944 13.2156 58.7396 12.9284 58.6712 12.6481C58.062 5.56517 52.1144 0 44.8664 0C37.2077 0 31 6.20099 31 13.8514C31 21.283 36.8586 27.3268 44.2093 27.6686C42.4367 30.4649 39.5826 32.7278 36.0989 33.7944L35.9826 33.8286C34.3674 34.3208 33.2517 35.8933 33.4023 37.6435C33.5734 39.6604 35.3461 41.1576 37.372 40.9867C43.3333 40.4808 49.2946 37.4384 53.3464 32.4954C55.3791 30.0341 56.9533 27.1353 57.9114 23.9767C58.8765 20.8249 59.205 17.4202 58.8765 14.0633L58.8217 13.4959Z" />
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="say-about-card">
+                                        <div class="say-about-card-top">
+                                            <ul>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                                <li><i class="bi bi-star-fill"></i></li>
+                                            </ul>
+                                        </div>
+                                        <p>“I was recommended snaga from a dear friendest onest Gives energy, strength & mostly youm motivationt goint and WOW!!! Gives energy, strength & mostlydat youm motivation”</p>
+                                        <div class="say-about-card-bottom">
+                                            <div class="author-area">
+                                                <div class="author-img">
+                                                    <img src="assets/img/home2/testimonial-author-img3.png" alt="">
+                                                </div>
+                                                <div class="author">
+                                                    <h5>Lincoln Miles</h5>
+                                                    <p>Director at Global Business</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="quote">
+                                                <svg width="59" height="41" viewBox="0 0 59 41" xmlns="http://www.w3.org/2000/svg">
+                                                    <g opacity="0.05">
+                                                        <path
+                                                            d="M27.8217 13.4959C27.7944 13.2156 27.7396 12.9284 27.6712 12.6481C27.062 5.56517 21.1144 0 13.8664 0C6.2077 0 0 6.20099 0 13.8514C0 21.283 5.85865 27.3268 13.2093 27.6686C11.4367 30.4649 8.58264 32.7278 5.09894 33.7944L4.98259 33.8286C3.36735 34.3208 2.25175 35.8933 2.40232 37.6435C2.57342 39.6604 4.34608 41.1576 6.37196 40.9867C12.3333 40.4808 18.2946 37.4384 22.3464 32.4954C24.3791 30.0341 25.9533 27.1353 26.9114 23.9767C27.8765 20.8249 28.205 17.4202 27.8765 14.0633L27.8217 13.4959Z" />
+                                                        <path
+                                                            d="M58.8217 13.4959C58.7944 13.2156 58.7396 12.9284 58.6712 12.6481C58.062 5.56517 52.1144 0 44.8664 0C37.2077 0 31 6.20099 31 13.8514C31 21.283 36.8586 27.3268 44.2093 27.6686C42.4367 30.4649 39.5826 32.7278 36.0989 33.7944L35.9826 33.8286C34.3674 34.3208 33.2517 35.8933 33.4023 37.6435C33.5734 39.6604 35.3461 41.1576 37.372 40.9867C43.3333 40.4808 49.2946 37.4384 53.3464 32.4954C55.3791 30.0341 56.9533 27.1353 57.9114 23.9767C58.8765 20.8249 59.205 17.4202 58.8765 14.0633L58.8217 13.4959Z" />
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination2"></div>
+            </div>
+         </div>
     </div>
-  </div>
-  <!-- Testimonial End -->
 </template>
 
-<style scoped>
-.testimonial {
-  background-color: #f8f9fa;
-}
-
-.text-primary {
-  color: #0d6efd;
-}
-
-.text-secondary {
-  color: #6c757d;
-}
-
-.testimonial-item {
-  background-color: white;
-  border-radius: 5px;
-}
-
-.border {
-  border: 1px solid #dee2e6 !important;
-}
-
-.border-top {
-  border-top: 1px solid #dee2e6 !important;
-}
-
-.rounded-circle {
-  border-radius: 50% !important;
-}
-
-/* Adjust spacing to match original */
-.py-5 {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-}
-
-.mb-5 {
-  margin-bottom: 3rem;
-}
-
-.pb-5 {
-  padding-bottom: 3rem;
-}
-
-/* Carousel item spacing */
-[data-carousel-item] {
-  padding: 0 15px;
-}
-
-/* Make sure images display properly */
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-</style>

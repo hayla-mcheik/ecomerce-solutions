@@ -1,47 +1,78 @@
 <template>
-    <GuestLayout>
-      <!-- Page Header Start -->
-      <div class="container-fluid page-header py-5">
-            <div class="container text-center py-5">
-                <h1 class="display-2 text-white mb-4 animated slideInDown">About Us</h1>
-                <nav aria-label="breadcrumb animated slideInDown">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item">
-                            <Link href="/">Home</Link></li>
-                        <li class="breadcrumb-item" aria-current="page">About</li>
-                    </ol>
-                </nav>
+
+        <Breadcrumbs />
+    <!-- Start About Us Banner Section -->
+    <div class="about-us-banner mt-110  mb-110">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="about-us-thumb hover-img mb-60">
+                        <img src="assets/img/mintcta.jpg" alt="">
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Page Header End -->
-
-
-  
-
-        <!-- About Start -->
-    <div class="container pt-5">
-        <div class="row g-5">
-            <!-- <div class="col-lg-6 col-md-6 col-sm-12 wow fadeIn d-flex d-md-none" data-wow-delay=".3s">
-                <div class="h-100 position-relative">
-                    <img src="/assets/img/img-about.jpg" class="img-fluid w-75 rounded" alt="">
-           
+        
+       
+        <!-- Start About Us Content Section section -->
+        <div class="about-us-content">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="about-us-wrapper">
+                            <h1>Experience Salon-Quality Hair Care Like Never Before</h1>
+                            <p>Introducing Regimedy, the perfect blend of a Hair Care Regimen and Remedies. Our goal is to create a customized system tailored to your unique needs, while also educating you on the benefits and proper care techniques.</p>
+                            <p>At Nano Essence, we understand that one size doesn’t fit all when it comes to hair care. That’s why our Regimedies are personalized to address each client’s specific requirements. Our sulfate-free shampoos, enriched with anti-aging vitamins A, C, and E, ensure color preservation and paraben-free conditioning.</p>
+                        </div>
+                    </div>
                 </div>
-            </div> -->
-            <div class="col-lg-8 col-md-8 col-sm-12 wow fadeIn mx-auto " data-wow-delay=".5s">
-                <h5 class="text-primary text-center">About Us</h5>
-                <h1 class="mb-4 text-center">WEBGENIX – Innovative Software Engineering Solutions</h1>
-                <p class="text-center">At WEBGENIX, we are a team of passionate software engineers with over 6 years of experience delivering innovative digital solutions. Our expertise spans a wide range of services including e-commerce development, QR code menu systems, custom mobile applications, and scalable software solutions for businesses of all sizes.</p>
-                <p class="mb-4 text-center">We combine cutting-edge technology with creative thinking to deliver seamless user experiences and powerful backend systems. Our mission is to empower your business through technology and help you thrive in a digitally connected world.</p>
+            </div>
+        </div>
+        <!-- End About Us Content Section section -->
+    </div>
+    <!-- End About Us Banner Section -->
+
+
+    <div class="makeup-section mb-110">
+        <div class="container">
+            <div class="makeup-top-item">
+                <div class="row align-items-center justify-content-center g-0 gy-4">
+                    <div class="col-lg-6">
+                        <div class="makeup-img hover-img">
+                            <img src="assets/img/what-is-clove.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="makeup-content">
+                            <span>BROW BESTSELLERS</span>
+                            <h2>They’re kinda our Best thing!</h2>
+                            <p>Each Regimedy includes a harmonious trio of shampoo, conditioner, and treatment, meticulously crafted to elevate your hair care routine to new heights. Prepare to embark on a journey of repair and rejuvenation, priming your hair for effortless styling and unmatched beauty.</p>
+                            <a href="" class="primary-btn1 style-2 hover-btn3">*Shop All Brows*</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-center g-0 gy-4">
+                <div class="col-lg-6 order-lg-1 order-2">
+                    <div class="makeup-content">
+                        <h2>Try on your perfect Best Nano Essence</h2>
+                        <p>Join us as we redefine the standards of hair care and embark on a journey to healthier, more vibrant hair. Nano Essence, where personalized beauty meets exceptional results.</p>
+                        <a href="" class="primary-btn1 style-2 hover-btn3">*Try It Now*</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-2 order-1">
+                    <div class="makeup-img hover-img">
+                        <img src="assets/img/what-is-hair-botox.jpg"  class="p-5" alt="">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-        <!-- About End -->
-    </GuestLayout>
 </template>
 
 <script setup>
-  import GuestLayout from '@/Layouts/GuestLayout.vue'
+  import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue'
   import { Link } from '@inertiajs/vue3';
 </script>
 

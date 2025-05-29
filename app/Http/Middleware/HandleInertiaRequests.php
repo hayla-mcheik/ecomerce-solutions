@@ -12,7 +12,15 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'app';
+public function rootView(Request $request): string
+{
+    if ($request->is('admin') || $request->is('admin/*')) {
+        return 'admin';
+    }
+
+    return 'app';
+}
+
 
     /**
      * Determine the current asset version.
