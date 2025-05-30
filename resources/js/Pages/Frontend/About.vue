@@ -1,5 +1,5 @@
 <template>
-
+  <Head title="About Us" />
         <Breadcrumbs />
     <!-- Start About Us Banner Section -->
     <div class="about-us-banner mt-110  mb-110">
@@ -74,6 +74,17 @@
   import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue'
   import { Link } from '@inertiajs/vue3';
+  import { Head } from '@inertiajs/vue3';
+
+defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => [
+      { name: 'Home', path: '/' },
+      { name: 'About Us', path: '/about' }
+    ]
+  }
+});
 </script>
 
 <style scoped>

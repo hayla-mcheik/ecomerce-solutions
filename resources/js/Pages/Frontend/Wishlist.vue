@@ -10,7 +10,7 @@ onUpdated(() => {
 
 <template>
 
-
+  <Head title="Wishlist" />
 <Breadcrumbs />
 <Wishlist />
 

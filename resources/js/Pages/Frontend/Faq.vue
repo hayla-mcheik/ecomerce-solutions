@@ -7,7 +7,7 @@ import FAQ from '@/Components/FAQ.vue';
 
 <template>
 
-
+  <Head title="FAQ" />
 <Breadcrumbs />
 <FAQ />
 

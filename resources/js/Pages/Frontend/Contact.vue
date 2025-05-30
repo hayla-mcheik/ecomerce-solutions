@@ -1,5 +1,5 @@
 <template>
-
+  <Head title="Contact Us" />
             <Breadcrumbs />
     <div class="contact-page pt-100 mb-100">
         <div class="container">

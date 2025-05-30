@@ -7,12 +7,15 @@ import Cart from '@/Components/Cart.vue';
 onUpdated(() => {
 
 });
+const props = defineProps({
+    cart: Array
+});
 </script>
 
 <template>
-
+  <Head title="Cart" />
 <Breadcrumbs />
-<Cart />
+<Cart :cart="cart"/>
 
 
 </template>

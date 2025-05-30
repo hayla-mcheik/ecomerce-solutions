@@ -15,105 +15,55 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr v-for="item in cartItems" :key="item.id">
                                     <td>
-                                        <div class="delete-icon">
+                                        <div class="delete-icon" @click="removeFromCart(item.id)">
                                             <i class="bi bi-x-lg"></i>
                                         </div>
                                     </td>
                                     <td data-label="Product" class="table-product">
                                         <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img1.png" alt="">
+                                            <img :src="`/storage/${item.product.image}`" :alt="item.product.name">
                                         </div>
                                         <div class="product-content">
-                                            <h6><a href="#">Eau De Blue Perfume</a></h6>
+                                            <h6><a href="#">{{ item.product.name }}</a></h6>
                                         </div>
                                     </td>
                                     <td data-label="Price">
                                         <p class="price">
-                                            <del>$40.00</del>
-                                            $30.00
+                                            ${{ item.price }}
                                         </p>
                                     </td>
                                     <td data-label="Quantity">
                                         <div class="quantity-counter">
-                                            <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                            <input name="quantity" type="text" class="quantity__input" value="01">
-                                            <a href="#" class="quantity__plus"><i class='bx bx-plus' ></i></a>
+                                            <a href="#" class="quantity__minus" 
+                                               @click.prevent="updateQuantity(item.id, item.quantity - 1)"
+                                               :class="{ 'disabled': item.quantity <= 1 }">
+                                                <i class='bx bx-minus'></i>
+                                            </a>
+                                            <input name="quantity" type="text" class="quantity__input" 
+                                                   v-model="item.quantity"
+                                                   @change="updateQuantity(item.id, item.quantity)">
+                                            <a href="#" class="quantity__plus" 
+                                               @click.prevent="updateQuantity(item.id, item.quantity + 1)"
+                                               :class="{ 'disabled': item.quantity >= item.product.stock }">
+                                                <i class='bx bx-plus'></i>
+                                            </a>
                                         </div>
                                     </td>
                                     <td data-label="Total">
-                                        $30.00
+                                        ${{ (item.price * item.quantity) }}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="delete-icon">
-                                            <i class="bi bi-x-lg"></i>
-                                        </div>
-                                    </td>
-                                    <td data-label="Product" class="table-product">
-                                        <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img2.png" alt="">
-                                        </div>
-                                        <div class="product-content">
-                                            <h6><a href="#">Smooth Makeup Box</a></h6>
-                                        </div>
-                                    </td>
-                                    <td data-label="Price">
-                                        <p class="price">
-                                            <del>$40.00</del>
-                                            $25.00
-                                        </p>
-                                    </td>
-                                    <td data-label="Quantity">
-                                        <div class="quantity-counter">
-                                            <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                            <input name="quantity" type="text" class="quantity__input" value="01">
-                                            <a href="#" class="quantity__plus"><i class='bx bx-plus' ></i></a>
-                                        </div>
-                                    </td>
-                                    <td data-label="Total">
-                                        $50.00
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="delete-icon">
-                                            <i class="bi bi-x-lg"></i>
-                                        </div>
-                                    </td>
-                                    <td data-label="Product" class="table-product">
-                                        <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img3.png" alt="">
-                                        </div>
-                                        <div class="product-content">
-                                            <h6><a href="#">Modern Red Lipstick</a></h6>
-                                        </div>
-                                    </td>
-                                    <td data-label="Price">
-                                        <p class="price">
-                                            <del>$40.00</del>
-                                            $32.00
-                                        </p>
-                                    </td>
-                                    <td data-label="Quantity">
-                                        <div class="quantity-counter">
-                                            <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                            <input name="quantity" type="text" class="quantity__input" value="01">
-                                            <a href="#" class="quantity__plus"><i class='bx bx-plus' ></i></a>
-                                        </div>
-                                    </td>
-                                    <td data-label="Total">
-                                        $30.00
-                                    </td>
+                                <tr v-if="cartItems.length === 0">
+                                    <td colspan="5" class="text-center">Your cart is empty</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="row g-4">
+            <div class="row g-4" v-if="cartItems.length > 0">
                 <div class="col-lg-4">
                     <div class="coupon-area">
                         <div class="cart-coupon-input">
@@ -133,42 +83,31 @@
                             <tr>
                                 <th>Cart Totals</th>
                                 <th></th>
-                                <th>$128.70</th>
+                                <th>${{ cartTotal }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Shipping</td>
-                                <td>
-                                    <ul class="cost-list text-start">
-                                        <li>Shipping Fee</li>
-                                        <li>Total ( tax excl.)</li>
-                                        <li>Total ( tax incl.)</li>
-                                        <li>Taxes</li>
-                                        <li>Shipping Enter your address to view shipping options. <br> <a href="#">Calculate
-                                                shipping</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul class="single-cost text-center">
-                                        <li>Fee</li>
-                                        <li>$15</li>
-                                        <li></li>
-                                        <li>$15</li>
-                                        <li>$15</li>
-                                        <li>$5</li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>Subtotal</td>
                                 <td></td>
-                                <td>$162.70</td>
+                                <td>${{ cartTotal }}</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping</td>
+                                <td>
+                                    Free shipping
+                                </td>
+                                <td>$0.00</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>${{ cartTotal }}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="submit" class="primary-btn1 hover-btn3">Product Checkout</button>
+                    <button type="submit" class="primary-btn1 hover-btn3">
+                        <Link href="/checkout">Product Checkout</Link></button>
                 </div>
             </div>
         </div>
@@ -176,8 +115,64 @@
 </template>
 
 <script setup>
+import { computed, ref, onMounted } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import axios from 'axios';
+import { toast } from 'vue3-toastify';
+
+const props = defineProps({
+    cart: Array
+});
+
+const cartItems = ref(props.cart || []);
+
+const cartTotal = computed(() => {
+    return cartItems.value.reduce((total, item) => {
+        return total + (item.price * item.quantity);
+    }, 0);
+});
+
+async function updateQuantity(cartId, newQuantity) {
+    if (newQuantity < 1) return;
+    
+    try {
+        const response = await axios.put(`/cart/${cartId}/update-quantity`, {
+            quantity: newQuantity
+        });
+        
+        if (response.data.success) {
+            const itemIndex = cartItems.value.findIndex(item => item.id === cartId);
+            if (itemIndex !== -1) {
+                cartItems.value[itemIndex].quantity = newQuantity;
+            }
+            toast.success('Quantity updated');
+        }
+    } catch (error) {
+        if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+        } else {
+            toast.error('Failed to update quantity');
+        }
+    }
+}
+
+async function removeFromCart(cartId) {
+    try {
+        const response = await axios.delete(`/cart/${cartId}/remove`);
+        
+        if (response.data.success) {
+            cartItems.value = cartItems.value.filter(item => item.id !== cartId);
+            toast.success('Item removed from cart');
+        }
+    } catch (error) {
+        toast.error('Failed to remove item');
+    }
+}
 </script>
 
-<style  scoped>
-
+<style scoped>
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
 </style>

@@ -115,4 +115,46 @@ class CartController extends Controller
 
         return response()->json(['items' => $items]);
     }
+    public function updateQuantity(Request $request, $cartId)
+{
+    $request->validate([
+        'quantity' => 'required|integer|min:1|max:100'
+    ]);
+
+    $cartItem = Cart::where('user_id', Auth::id())
+                   ->where('id', $cartId)
+                   ->firstOrFail();
+
+    $product = Product::findOrFail($cartItem->product_id);
+
+    if ($request->quantity > $product->quantity) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Only ' . $product->quantity . ' items available in stock'
+        ], 400);
+    }
+
+    $cartItem->update(['quantity' => $request->quantity]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Quantity updated',
+        'new_quantity' => $request->quantity,
+        'new_total' => $cartItem->price * $request->quantity
+    ]);
+}
+
+public function removeFromCart($cartId)
+{
+    $cartItem = Cart::where('user_id', Auth::id())
+                   ->where('id', $cartId)
+                   ->firstOrFail();
+
+    $cartItem->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Item removed from cart'
+    ]);
+}
 }

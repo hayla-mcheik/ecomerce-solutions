@@ -15,7 +15,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                            <tr>
                                     <td>
                                         <div class="delete-icon">
                                             <i class="bi bi-x-lg"></i>
@@ -23,77 +23,23 @@
                                     </td>
                                     <td data-label="Product" class="table-product">
                                         <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img1.png" alt="">
+                                            <img src="assets/img/inner-page/whistlist-img4.png" alt="">
                                         </div>
                                         <div class="product-content">
-                                            <h6><a href="product-default.html">Eau De Blue Perfume</a></h6>
+                                            <h6>New Botanical Shampoo</h6>
                                         </div>
                                     </td>
                                     <td data-label="Price">
                                         <p class="price">
                                             <del>$40.00</del>
-                                            $30.00
+                                            $27.00
                                         </p>
                                     </td>
                                     <td data-label="Stock">
                                         <span>In Stock</span>
                                     </td>
                                     <td>
-                                        <a href="cart.html" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="delete-icon">
-                                            <i class="bi bi-x-lg"></i>
-                                        </div>
-                                    </td>
-                                    <td data-label="Product" class="table-product">
-                                        <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img2.png" alt="">
-                                        </div>
-                                        <div class="product-content">
-                                            <h6><a href="product-default.html">Smooth Makeup Box</a></h6>
-                                        </div>
-                                    </td>
-                                    <td data-label="Price">
-                                        <p class="price">
-                                            <del>$40.00</del>
-                                            $25.00
-                                        </p>
-                                    </td>
-                                    <td data-label="Stock">
-                                        <span>In Stock</span>
-                                    </td>
-                                    <td>
-                                        <a href="cart.html" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="delete-icon">
-                                            <i class="bi bi-x-lg"></i>
-                                        </div>
-                                    </td>
-                                    <td data-label="Product" class="table-product">
-                                        <div class="product-img">
-                                            <img src="assets/img/inner-page/whistlist-img3.png" alt="">
-                                        </div>
-                                        <div class="product-content">
-                                            <h6><a href="product-default.html">Modern Red Lipstick</a></h6>
-                                        </div>
-                                    </td>
-                                    <td data-label="Price">
-                                        <p class="price">
-                                            <del>$40.00</del>
-                                            $32.00
-                                        </p>
-                                    </td>
-                                    <td data-label="Stock">
-                                        <span>In Stock</span>
-                                    </td>
-                                    <td>
-                                        <a href="cart.html" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</a>
+                                        <Link href="/cart" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</Link>
                                     </td>
                                 </tr>
                                 <tr>
@@ -107,7 +53,7 @@
                                             <img src="assets/img/inner-page/whistlist-img4.png" alt="">
                                         </div>
                                         <div class="product-content">
-                                            <h6><a href="product-default.html">New Botanical Shampoo</a></h6>
+                                            <h6>New Botanical Shampoo</h6>
                                         </div>
                                     </td>
                                     <td data-label="Price">
@@ -120,7 +66,7 @@
                                         <span>In Stock</span>
                                     </td>
                                     <td>
-                                        <a href="cart.html" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</a>
+                                        <Link href="/cart" class="add-cart-btn hover-btn2"><i class="bi bi-bag-check"></i>Add To Cart</Link>
                                     </td>
                                 </tr>
                             </tbody>
@@ -133,6 +79,8 @@
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3';
+
 
 </script>
 

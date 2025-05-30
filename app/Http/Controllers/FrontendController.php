@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class FrontendController extends Controller
@@ -58,12 +60,38 @@ public function productDetails($id)
 
 public function cart()
 {
-    return Inertia::render('Frontend/Cart');
+    $cart = Cart::with('product') // Eager load the product relationship
+        ->where('user_id', Auth::id())
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'total' => $item->price * $item->quantity,
+                'product' => [ // Include the product data
+                    'id' => $item->product->id,
+                    'name' => $item->product->name,
+                    'image' => $item->product->image,
+                    'stock' => $item->product->quantity
+                ]
+            ];
+        });
+
+    return Inertia::render('Frontend/Cart', [
+        'cart' => $cart
+    ]);
 }
 
 public function checkout()
 {
-    return Inertia::render('Frontend/Checkout');
+     $cart = Cart::with('product') // Eager load the product relationship
+        ->where('user_id', Auth::id())
+        ->get();
+    return Inertia::render('Frontend/Checkout',[
+        'cart' =>$cart
+    ]);
 }
 
 public function faq()

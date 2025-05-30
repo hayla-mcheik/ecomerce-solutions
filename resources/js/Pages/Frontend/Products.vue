@@ -16,7 +16,7 @@ const props = defineProps({
 </script>
 
 <template>
-
+  <Head title="Products" />
 
 <Breadcrumbs />
 <CategorySlider :categories="categories"/>

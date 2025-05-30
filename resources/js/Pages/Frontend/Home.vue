@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
 
-
+  <Head title="Home" />
 <!-- Carousel -->
 
 <HeroSlider :sliders="sliders"/>

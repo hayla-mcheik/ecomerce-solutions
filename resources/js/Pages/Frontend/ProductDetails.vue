@@ -16,7 +16,8 @@ const props = defineProps({
 
 <template>
 
-
+  <Head title="Product Details" />\
+  
 <ShopDetails :product="product"/>
 <ShopDetailsDescription :product="product"/>
 <!-- <RelatedProducts /> -->

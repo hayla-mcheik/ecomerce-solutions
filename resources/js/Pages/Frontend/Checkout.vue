@@ -7,11 +7,14 @@ import Checkout from '@/Components/Checkout.vue';
 onUpdated(() => {
 
 });
+const props = defineProps({
+    cart: Array
+});
 </script>
 
 <template>
-
+  <Head title="Checkout" />
 <Breadcrumbs />
-<Checkout />
+<Checkout :cart="cart" />
 
 </template>

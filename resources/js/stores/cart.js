@@ -109,12 +109,58 @@ async function addToCart(productId, quantity = 1) {
         }
     }
 
+    async function updateCartItemQuantity(cartId, newQuantity) {
+    try {
+        isLoading.value = true;
+        const response = await axios.put(`/cart/${cartId}/update-quantity`, {
+            quantity: newQuantity
+        });
+        
+        if (response.data.success) {
+            const itemIndex = items.value.findIndex(item => item.id === cartId);
+            if (itemIndex !== -1) {
+                items.value[itemIndex].quantity = newQuantity;
+                count.value = items.value.reduce((sum, item) => sum + item.quantity, 0);
+            }
+            toast.success(response.data.message || 'Quantity updated');
+            return { success: true, data: response.data };
+        }
+    } catch (err) {
+        handleError(err, 'Failed to update quantity');
+        return { success: false, error: err.response?.data?.message };
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+async function removeCartItem(cartId) {
+    try {
+        isLoading.value = true;
+        const response = await axios.delete(`/cart/${cartId}/remove`);
+        
+        if (response.data.success) {
+            items.value = items.value.filter(item => item.id !== cartId);
+            count.value = items.value.reduce((sum, item) => sum + item.quantity, 0);
+            toast.success(response.data.message || 'Item removed from cart');
+            return { success: true };
+        }
+    } catch (err) {
+        handleError(err, 'Failed to remove item');
+        return { success: false };
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+
     // Initialize cart count when store is created
     function initialize() {
         if (usePage().props.auth.user) {
             fetchCartCount();
         }
     }
+
+
 
     return { 
         count,
@@ -127,6 +173,8 @@ async function addToCart(productId, quantity = 1) {
         fetchCartItems,
         addToCart,
         initialize,
-        handleError
+        handleError,
+            updateCartItemQuantity,
+    removeCartItem
     };
 });
