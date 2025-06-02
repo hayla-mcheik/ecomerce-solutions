@@ -106,7 +106,7 @@
                             <path
                                 d="M8.99951 7.71427C6.49237 7.71427 4.49951 5.72141 4.49951 3.21427C4.49951 2.82855 4.75665 2.57141 5.14237 2.57141C5.52808 2.57141 5.78523 2.82855 5.78523 3.21427C5.78523 5.01427 7.19951 6.42855 8.99951 6.42855C10.7995 6.42855 12.2138 5.01427 12.2138 3.21427C12.2138 2.82855 12.4709 2.57141 12.8567 2.57141C13.2424 2.57141 13.4995 2.82855 13.4995 3.21427C13.4995 5.72141 11.5067 7.71427 8.99951 7.71427Z" />
                         </svg>
-                        <span>{{ cart.count }}</span>
+                    <span class="cart-count-badge">{{ cart.itemCount }}</span>
                     </Link>
                     </button>
              
@@ -119,16 +119,46 @@
                                     d="M16.528 2.20922C16.0674 1.71414 15.5099 1.31909 14.8902 1.04862C14.2704 0.778143 13.6017 0.638026 12.9255 0.636976C12.2487 0.637756 11.5794 0.777669 10.959 1.04803C10.3386 1.31839 9.78042 1.71341 9.31911 2.20857L9.00132 2.54439L8.68352 2.20857C6.83326 0.217182 3.71893 0.102819 1.72758 1.95309C1.63932 2.0351 1.5541 2.12032 1.47209 2.20857C-0.490696 4.32568 -0.490696 7.59756 1.47209 9.71466L8.5343 17.1622C8.77862 17.4201 9.18579 17.4312 9.44373 17.1869C9.45217 17.1789 9.46039 17.1707 9.46838 17.1622L16.528 9.71466C18.4907 7.59779 18.4907 4.32609 16.528 2.20922ZM15.5971 8.82882H15.5965L9.00132 15.7849L2.40553 8.82882C0.90608 7.21116 0.90608 4.71143 2.40553 3.09377C3.76722 1.61792 6.06755 1.52538 7.5434 2.88706C7.61505 2.95317 7.68401 3.02213 7.75012 3.09377L8.5343 3.92107C8.79272 4.17784 9.20995 4.17784 9.46838 3.92107L10.2526 3.09441C11.6142 1.61856 13.9146 1.52602 15.3904 2.8877C15.4621 2.95381 15.531 3.02277 15.5971 3.09441C17.1096 4.71464 17.1207 7.21893 15.5971 8.82882Z" />
                             </g>
                         </svg>
+                             <span v-if="wishlist.items.length > 0" class="wishlist-count-badge">
+            {{ wishlist.items.length }}
+        </span>
                     </Link>
                 </div>
-                <div class="user-login">
-                    <p v-if="$page.props.auth.user" class="text-sm">
-  {{ $page.props.auth.user.name }}
-                    </p>
-                    <div v-else>
-  <Link href="/login" class="text-xs">Login</Link> | <Link href="/register" class="text-xs">Register</Link>
-  </div>
-                </div>
+             <div class="user-login">
+                    <div v-if="$page.props.auth.user" class="relative">
+                        <!-- User dropdown trigger -->
+                        <button @click="toggleUserMenu" class="flex items-center gap-1">
+                            <p class="text-sm">{{ $page.props.auth.user.name }}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown menu -->
+                        <div v-show="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <!-- Show Dashboard link only for admin (role = 1) -->
+                            <Link v-if="$page.props.auth.user.role === 1" 
+                                  href="/admin/dashboard" 
+                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Dashboard
+                            </Link>
+                                     <Link v-if="$page.props.auth.user.role === 0" 
+                                  href="/user/dashboard" 
+                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Dashboard
+                            </Link>
+                            
+          <button @click="handleLogout" 
+            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        Logout
+    </button>
+                        </div>
+                    </div>
+                         <div v-else>
+                        <Link href="/login" class="text-xs">Login</Link> | 
+                        <Link href="/register" class="text-xs">Register</Link>
+                    </div>
+                    </div>
                 <div class="sidebar-button mobile-menu-btn "  @click="sidebarToggle" :class="{ 'active': sidebarOpen }">
                     <span></span>
                 </div>
@@ -138,14 +168,45 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
-import { ref, onMounted } from 'vue'
+import { Link, router } from '@inertiajs/vue3'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useCartStore } from '@/stores/cart';
+import { useWishlistStore } from '@/stores/wishlist';
 
+const userMenuOpen = ref(false);
 const cart = useCartStore();
+const wishlist = useWishlistStore();
 
+
+// Watch for changes in the cart store
+watch(() => cart.items, () => {
+    // This will automatically update through the itemCount computed property
+}, { deep: true });
+
+const handleLogout = async () => {
+    try {
+        // Clear client-side stores first
+        await cart.fetchCartCount();
+        wishlist.items = []; // Directly clear wishlist
+        
+        // Then perform logout
+        await router.post(route('logout'));
+        
+        // Optional: Force reload to ensure complete state reset
+        window.location.reload();
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Fallback: Still try to clear local state
+        cart.items = [];
+        cart.count = 0;
+        wishlist.items = [];
+    }
+};
 onMounted(() => {
-    cart.fetchCartCount();
+    cart.fetchCartItems();
+        cart.initialize();
+            wishlist.fetchWishlist();
+
 });
 // State for sidebar/drawer
 const sidebarOpen = ref(false)
@@ -182,8 +243,24 @@ const closeMenu = () => {
   }
   
 }
-// If you need to initialize anything when component mounts
+const toggleUserMenu = () => {
+    userMenuOpen.value = !userMenuOpen.value;
+};
+
+// Close dropdown when clicking outside
+const closeUserMenu = (event) => {
+    if (!event.target.closest('.user-login')) {
+        userMenuOpen.value = false;
+    }
+};
+
 onMounted(() => {
-  // Initialization code if needed
-})
+    cart.fetchCartCount();
+    document.addEventListener('click', closeUserMenu);
+});
+
+// Cleanup event listener
+onBeforeUnmount(() => {
+    document.removeEventListener('click', closeUserMenu);
+});
 </script>

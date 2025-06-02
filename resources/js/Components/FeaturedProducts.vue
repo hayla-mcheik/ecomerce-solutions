@@ -1,17 +1,17 @@
 <template>
     <div class="feature-product-section mb-110">
-         <div class="container">
+        <div class="container">
             <div class="section-title3">
-                <h3>Featured <span>Product</span> </h3>
+                <h3>Featured <span>Products</span></h3>
                 <div class="view-all">
-                    <a href="/products">View All Product
+                    <Link href="/products">View All Product
                         <svg width="33" height="13" viewBox="0 0 33 13" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M25.5083 7.28L0.491206 7.25429C0.36093 7.25429 0.23599 7.18821 0.143871 7.0706C0.0517519 6.95299 0 6.79347 0 6.62714C0 6.46081 0.0517519 6.3013 0.143871 6.18369C0.23599 6.06607 0.36093 6 0.491206 6L25.5088 6.02571C25.6391 6.02571 25.764 6.09179 25.8561 6.2094C25.9482 6.32701 26 6.48653 26 6.65286C26 6.81919 25.9482 6.9787 25.8561 7.09631C25.764 7.21393 25.6386 7.28 25.5083 7.28Z" />
                             <path
                                 d="M33.0001 6.50854C29.2204 7.9435 24.5298 10.398 21.623 13L23.9157 6.50034L21.6317 0C24.5358 2.60547 29.2224 5.06539 33.0001 6.50854Z" />
                         </svg>
-                    </a> 
+                    </Link>
                 </div>
             </div>
             <div class="row g-4">
@@ -21,7 +21,7 @@
                             <Link :href="'/product-details/' + product.id">
                                 <img v-if="product.image" :src="'/storage/' + product.image" alt="" class="img1">
                                 <img v-if="product.image" :src="'/storage/' + product.image" alt="" class="img2">
-                                <div class="batch">
+                                <div v-if="product.discount" class="batch">
                                     <span>-{{ product.discount }}%</span>
                                 </div>
                             </Link>
@@ -29,19 +29,18 @@
                                 <div class="description-content">
                                     <p>{{ product.desc }}</p>
                                 </div>
-                   
                             </div>
                             <div class="view-and-favorite-area">
                                 <ul>
                                     <li>
-                                        <Link href="/wishlist">
+                                        <button @click.prevent="toggleWishlist(product)" class="wishlist-btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                                                 <g clip-path="url(#clip0_168_378)">
-                                                    <path
+                                                    <path :fill="isInWishlist(product.id) ? '#ff0000' : '#ffffff'"
                                                         d="M16.528 2.20919C16.0674 1.71411 15.5099 1.31906 14.8902 1.04859C14.2704 0.778112 13.6017 0.637996 12.9255 0.636946C12.2487 0.637725 11.5794 0.777639 10.959 1.048C10.3386 1.31835 9.78042 1.71338 9.31911 2.20854L9.00132 2.54436L8.68352 2.20854C6.83326 0.217151 3.71893 0.102789 1.72758 1.95306C1.63932 2.03507 1.5541 2.12029 1.47209 2.20854C-0.490696 4.32565 -0.490696 7.59753 1.47209 9.71463L8.5343 17.1622C8.77862 17.4201 9.18579 17.4312 9.44373 17.1868C9.45217 17.1788 9.46039 17.1706 9.46838 17.1622L16.528 9.71463C18.4907 7.59776 18.4907 4.32606 16.528 2.20919ZM15.5971 8.82879H15.5965L9.00132 15.7849L2.40553 8.82879C0.90608 7.21113 0.90608 4.7114 2.40553 3.09374C3.76722 1.61789 6.06755 1.52535 7.5434 2.88703C7.61505 2.95314 7.68401 3.0221 7.75012 3.09374L8.5343 3.92104C8.79272 4.17781 9.20995 4.17781 9.46838 3.92104L10.2526 3.09438C11.6142 1.61853 13.9146 1.52599 15.3904 2.88767C15.4621 2.95378 15.531 3.02274 15.5971 3.09438C17.1096 4.71461 17.1207 7.2189 15.5971 8.82879Z" />
                                                 </g>
                                             </svg>
-                                        </Link>
+                                        </button>
                                     </li>
                                 </ul>  
                             </div>
@@ -57,10 +56,10 @@
                             </p> 
                             <div class="flex justify-between">
                                 <div>
-                                    <p class="price">${{ product.price }} <del>${{ product.old_price }}</del></p>
+                                    <p class="price">${{ product.price }} <del v-if="product.old_price">${{ product.old_price }}</del></p>
                                 </div>
                                 <div>
-                                    <button @click.prevent="addToCart(product)">
+                                    <button @click.prevent="addToCart(product)" class="add-to-cart-btn">
                                         <i class="fa fa-shopping-cart"></i>
                                     </button>
                                 </div>
@@ -70,12 +69,12 @@
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
     </div>
 </template>
-
 <script setup>
 import { useCartStore } from '@/stores/cart';
+import { useWishlistStore } from '@/stores/wishlist';
 import { Link } from '@inertiajs/vue3';
 import { toast } from 'vue3-toastify';
 import { onMounted } from 'vue';
@@ -85,14 +84,46 @@ const props = defineProps({
 });
 
 const cart = useCartStore();
+const wishlist = useWishlistStore();
 
-// Initialize cart when component mounts
 onMounted(() => {
     cart.initialize();
+    wishlist.fetchWishlist();
 });
 
+const isInWishlist = (productId) => {
+    return wishlist.items.some(item => item.product_id === productId);
+};
+
+const toggleWishlist = async (product) => {
+    let result;
+    
+    if (isInWishlist(product.id)) {
+        result = await wishlist.removeFromWishlist(product.id);
+        if (result.success) {
+            toast.success('Removed from wishlist');
+        } else {
+            toast.error(result.message || 'Failed to remove from wishlist');
+        }
+    } else {
+        result = await wishlist.addToWishlist(product);
+        if (result.success) {
+            toast.success('Added to wishlist');
+        } else {
+            toast.error(result.message || 'Failed to add to wishlist');
+        }
+    }
+};
+
+// Updated addToCart method
 const addToCart = async (product) => {
-    await cart.addToCart(product.id);
+    try {
+        // Store will handle toast notification internally
+        await cart.addToCart(product.id);
+    } catch (error) {
+        // Error handling remains as fallback
+        toast.error(error.response?.data?.message || 'Failed to add to cart');
+    }
 };
 </script>
 

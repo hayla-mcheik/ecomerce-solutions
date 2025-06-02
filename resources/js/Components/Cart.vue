@@ -15,7 +15,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in cartItems" :key="item.id">
+                                <tr v-for="item in cart.items" :key="item.id">
                                     <td>
                                         <div class="delete-icon" @click="removeFromCart(item.id)">
                                             <i class="bi bi-x-lg"></i>
@@ -42,7 +42,7 @@
                                                 <i class='bx bx-minus'></i>
                                             </a>
                                             <input name="quantity" type="text" class="quantity__input" 
-                                                   v-model="item.quantity"
+                                                   v-model.number="item.quantity"
                                                    @change="updateQuantity(item.id, item.quantity)">
                                             <a href="#" class="quantity__plus" 
                                                @click.prevent="updateQuantity(item.id, item.quantity + 1)"
@@ -52,10 +52,10 @@
                                         </div>
                                     </td>
                                     <td data-label="Total">
-                                        ${{ (item.price * item.quantity) }}
+                                        ${{ (item.price * item.quantity).toFixed(2) }}
                                     </td>
                                 </tr>
-                                <tr v-if="cartItems.length === 0">
+                                <tr v-if="cart.items.length === 0">
                                     <td colspan="5" class="text-center">Your cart is empty</td>
                                 </tr>
                             </tbody>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row g-4" v-if="cartItems.length > 0">
+            <div class="row g-4" v-if="cart.items.length > 0">
                 <div class="col-lg-4">
                     <div class="coupon-area">
                         <div class="cart-coupon-input">
@@ -83,14 +83,14 @@
                             <tr>
                                 <th>Cart Totals</th>
                                 <th></th>
-                                <th>${{ cartTotal }}</th>
+                                <th>${{ cart.cartTotal.toFixed(2) }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Subtotal</td>
                                 <td></td>
-                                <td>${{ cartTotal }}</td>
+                                <td>${{ cart.cartTotal.toFixed(2) }}</td>
                             </tr>
                             <tr>
                                 <td>Shipping</td>
@@ -102,12 +102,13 @@
                             <tr>
                                 <td>Total</td>
                                 <td></td>
-                                <td>${{ cartTotal }}</td>
+                                <td>${{ cart.cartTotal.toFixed(2) }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <button type="submit" class="primary-btn1 hover-btn3">
-                        <Link href="/checkout">Product Checkout</Link></button>
+                        <Link href="/checkout">Product Checkout</Link>
+                    </button>
                 </div>
             </div>
         </div>
@@ -115,58 +116,24 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
-import axios from 'axios';
-import { toast } from 'vue3-toastify';
+import { computed, onMounted } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import { useCartStore } from '@/stores/cart';
 
-const props = defineProps({
-    cart: Array
-});
+const cart = useCartStore();
 
-const cartItems = ref(props.cart || []);
-
-const cartTotal = computed(() => {
-    return cartItems.value.reduce((total, item) => {
-        return total + (item.price * item.quantity);
-    }, 0);
+// Fetch cart items when component mounts
+onMounted(async () => {
+    await cart.fetchCartItems();
 });
 
 async function updateQuantity(cartId, newQuantity) {
     if (newQuantity < 1) return;
-    
-    try {
-        const response = await axios.put(`/cart/${cartId}/update-quantity`, {
-            quantity: newQuantity
-        });
-        
-        if (response.data.success) {
-            const itemIndex = cartItems.value.findIndex(item => item.id === cartId);
-            if (itemIndex !== -1) {
-                cartItems.value[itemIndex].quantity = newQuantity;
-            }
-            toast.success('Quantity updated');
-        }
-    } catch (error) {
-        if (error.response?.data?.message) {
-            toast.error(error.response.data.message);
-        } else {
-            toast.error('Failed to update quantity');
-        }
-    }
+    await cart.updateCartItemQuantity(cartId, newQuantity);
 }
 
 async function removeFromCart(cartId) {
-    try {
-        const response = await axios.delete(`/cart/${cartId}/remove`);
-        
-        if (response.data.success) {
-            cartItems.value = cartItems.value.filter(item => item.id !== cartId);
-            toast.success('Item removed from cart');
-        }
-    } catch (error) {
-        toast.error('Failed to remove item');
-    }
+    await cart.removeCartItem(cartId);
 }
 </script>
 
@@ -174,5 +141,25 @@ async function removeFromCart(cartId) {
 .disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.quantity-counter {
+    display: flex;
+    align-items: center;
+}
+
+.quantity__input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: #ff0000;
+}
+
+.delete-icon:hover {
+    opacity: 0.8;
 }
 </style>

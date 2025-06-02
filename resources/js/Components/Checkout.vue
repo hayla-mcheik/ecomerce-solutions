@@ -5,91 +5,66 @@
                 <div class="col-lg-7">
                     <div class="form-wrap mb-30">
                         <h4>Billing Details</h4>
-                        <form>
+                        <form @submit.prevent="placeOrder">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-inner">
-                                        <label>First Name</label>
-                                        <input type="text" name="fname" placeholder="Your first name">
+                                        <label>First Name *</label>
+                                        <input type="text" v-model="form.first_name" required placeholder="Your first name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-inner">
-                                        <label>Last Name</label>
-                                        <input type="text" name="fname" placeholder="Your last name">
+                                        <label>Last Name *</label>
+                                        <input type="text" v-model="form.last_name" required placeholder="Your last name">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <label>Country / Region</label>
-                                        <input type="text" name="fname" placeholder="Your country name">
+                                        <label>Country / Region *</label>
+                                        <input type="text" v-model="form.country" required placeholder="Your country name">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <label>Street Address</label>
-                                        <input type="text" name="fname" placeholder="House and street name">
+                                        <label>Street Address *</label>
+                                        <input type="text" v-model="form.address" required placeholder="House and street name">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <select>
-                                            <option>Town / City</option>
-                                            <option>Dhaka</option>
-                                            <option>Saidpur</option>
-                                            <option>Newyork</option>
-                                        </select>
-
+                                        <label>City *</label>
+                                        <input type="text" v-model="form.city" required placeholder="Your city">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <input type="text" name="fname" placeholder="Post Code">
+                                        <label>Postal Code *</label>
+                                        <input type="text" v-model="form.postal_code" required placeholder="Post Code">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <label>Additional Information</label>
-                                        <input type="text" name="fname" placeholder="Your Phone Number">
+                                        <label>Phone *</label>
+                                        <input type="tel" v-model="form.phone" required placeholder="Your phone number">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <input type="email" name="email" placeholder="Your Email Address">
+                                        <label>Email *</label>
+                                        <input type="email" v-model="form.email" required placeholder="Your Email Address">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <input type="text" name="postcode" placeholder="Post Code">
+                                        <textarea v-model="form.notes" placeholder="Order Notes (Optional)" rows="6"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-inner">
-                                        <textarea name="message" placeholder="Order Notes (Optional)" rows="6"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="form-wrap box--shadow">
-                        <h4>Ship to a Different Address?</h4>
-                        <form>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-inner">
-                                        <label>First Name</label>
-                                        <input type="text" name="fname" placeholder="Your first name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-inner">
-                                        <label>Last Name</label>
-                                        <input type="text" name="fname" placeholder="Your last name">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-inner">
-                                        <textarea name="message" placeholder="Order Notes (Optional)" rows="3"></textarea>
+                                        <button type="submit" class="primary-btn1 hover-btn3" :disabled="isProcessing">
+                                            {{ isProcessing ? 'Processing...' : 'Place Order' }}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -100,73 +75,22 @@
                     <div class="added-product-summary mb-30">
                         <h5>Order Summary</h5>
                         <ul class="added-products">
-                            <li class="single-product">
+                            <li v-for="item in cart.items" :key="item.id" class="single-product">
                                 <div class="product-area">
                                     <div class="product-img">
-                                        <img src="assets/img/inner-page/checkout-product-img1.png" alt="">
+                                        <img :src="`/storage/${item.product.image}`" :alt="item.product.name">
                                     </div>
                                     <div class="product-info">
-                                        <h5><a href="#">Brand new Nail Polish</a></h5>
+                                        <h5><a href="#">{{ item.product.name }}</a></h5>
                                         <div class="product-total">
                                             <div class="quantity-counter">
-                                                <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                                <input name="quantity" type="text" class="quantity__input" value="01">
-                                                <a href="#" class="quantity__plus"><i class='bx bx-plus'></i></a>
+                                                <span class="quantity__input">{{ item.quantity }}</span>
                                             </div>
-                                            <strong> <i class="bi bi-x-lg px-2"></i>
-                                                <span class="product-price">$39.00</span>
+                                            <strong>
+                                                <span class="product-price">${{ (item.price * item.quantity).toFixed(2) }}</span>
                                             </strong>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="delete-btn">
-                                    <i class='bx bx-x'></i>
-                                </div>
-                            </li>
-                            <li class="single-product">
-                                <div class="product-area">
-                                    <div class="product-img">
-                                        <img src="assets/img/inner-page/checkout-product-img2.png" alt="">
-                                    </div>
-                                    <div class="product-info">
-                                        <h5><a href="#">Brand new Face Product</a></h5>
-                                        <div class="product-total">
-                                            <div class="quantity-counter">
-                                                <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                                <input name="quantity" type="text" class="quantity__input" value="01">
-                                                <a href="#" class="quantity__plus"><i class='bx bx-plus'></i></a>
-                                            </div>
-                                            <strong> <i class="bi bi-x-lg px-2"></i>
-                                                <span class="product-price">$60.00</span>
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="delete-btn">
-                                    <i class='bx bx-x'></i>
-                                </div>
-                            </li>
-                            <li class="single-product">
-                                <div class="product-area">
-                                    <div class="product-img">
-                                        <img src="assets/img/inner-page/checkout-product-img3.png" alt="">
-                                    </div>
-                                    <div class="product-info">
-                                        <h5><a href="#">Brand new Shampoo</a></h5>
-                                        <div class="product-total">
-                                            <div class="quantity-counter">
-                                                <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                                <input name="quantity" type="text" class="quantity__input" value="01">
-                                                <a href="#" class="quantity__plus"><i class='bx bx-plus'></i></a>
-                                            </div>
-                                            <strong> <i class="bi bi-x-lg px-2"></i>
-                                                <span class="product-price">$40.00</span>
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="delete-btn">
-                                    <i class='bx bx-x'></i>
                                 </div>
                             </li>
                         </ul>
@@ -176,136 +100,51 @@
                             <thead>
                                 <tr>
                                     <th>Subtotal</th>
-                                    <th>$128.70</th>
+                                    <th>${{ cart.cartTotal.toFixed(2) }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="tax">Tax</td>
-                                    <td>$5</td>
+                                    <td class="tax">Tax ({{ taxRate }}%)</td>
+                                    <td>${{ taxAmount.toFixed(2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Total ( tax excl.)</td>
-                                    <td>$15</td>
+                                    <td>Shipping</td>
+                                    <td>${{ shippingCost.toFixed(2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Total ( tax incl.)</td>
-                                    <td>$15</td>
+                                    <td>Total (tax incl.)</td>
+                                    <td>${{ orderTotal.toFixed(2) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="cost-summary total-cost mb-30">
-                        <table class="table cost-summary-table total-cost">
-                            <thead>
-                                <tr>
-                                    <th>Total</th>
-                                    <th>$162.70</th>
-                                </tr>
-                            </thead>
-                        </table>
+                    <div class="payment-method mb-30">
+                        <h5>Payment Method</h5>
+                        <div class="payment-option">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="paymentMethod" 
+                                       id="cashOnDelivery" value="cod" checked>
+                                <label class="form-check-label" for="cashOnDelivery">
+                                    Cash on Delivery
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="paymentMethod" 
+                                       id="creditCard" value="credit_card">
+                                <label class="form-check-label" for="creditCard">
+                                    Credit Card
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" v-model="paymentMethod" 
+                                       id="paypal" value="paypal">
+                                <label class="form-check-label" for="paypal">
+                                    PayPal
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <form class="payment-form">
-                        <div class="payment-methods mb-30">
-                            <ul class="payment-list">
-                                <li class="check-payment">
-                                    <div class="form-check payment-check">
-                                        <h6>Check payments</h6>
-                                        <p class="para">Please send a check to Store Name, Store Street, Store State / Country, Store Postcode.</p>
-                                    </div>
-                                    <div class="checked">
-                                    </div>
-                                </li>
-                                <li class="cash-delivary">
-                                    <div class="form-check payment-check">
-                                        <h6>Cash on delivery</h6>
-                                        <p class="para">Pay with cash upon delivery.</p>
-                                    </div>
-                                    <div class="checked">
-                                    </div>
-                                </li>
-                                <li class="paypal">
-                                    <div class="form-check payment-check paypal">
-                                        <h6>Paypal</h6>
-                                        <img src="assets/img/inner-page/payment.png" alt="">
-                                        <a href="#" class="about-paypal">What is PayPal?</a>
-                                    </div>
-                                    <div class="checked">
-                                    </div>
-                                </li>
-                                <li class="stripe">
-                                    <h6>Card</h6>
-                                    <div class="checked">
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="choose-payment-method pt-25 pb-25" id="strip-payment" style="display: none;">
-                                <h5>Select Your Payment Method</h5>
-                                <div class="row gy-4 g-4">
-                                    <div class="col-md-12">
-                                        <div class="input-area">
-                                            <label>Card Number</label>
-                                            <div class="input-field">
-                                                <input type="text" placeholder="1234 1234 1234 1234">
-                                                <img src="assets/img/inner-page/payment.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-7">
-                                        <div class="input-area">
-                                            <label>Expiration Date</label>
-                                            <div class="row gy-4">
-                                                <div class="col-sm-6">
-                                                    <select>
-                                                        <option>Month</option>
-                                                        <option>January</option>
-                                                        <option>February</option>
-                                                        <option>March</option>
-                                                        <option>April</option>
-                                                        <option>May</option>
-                                                        <option>June</option>
-                                                        <option>July</option>
-                                                        <option>August</option>
-                                                        <option>September</option>
-                                                        <option>October</option>
-                                                        <option>November</option>
-                                                        <option>December</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <select>
-                                                        <option>Day</option>
-                                                        <option>01</option>
-                                                        <option>02</option>
-                                                        <option>03</option>
-                                                        <option>04</option>
-                                                        <option>05</option>
-                                                        <option>06</option>
-                                                        <option>07</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-5">
-                                        <div class="input-area">
-                                            <label>CVC</label>
-                                            <input type="text" placeholder="123">
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="payment-form-bottom d-flex align-items-start">
-                                <input type="checkbox" class="custom-check-box" id="terms">
-                                <label for="terms">I have read and agree to the website <a href="#">Terms and
-                                        conditions</a></label>
-                            </div>
-                        </div>
-                        <div class="place-order-btn">
-                            <button type="submit" class="primary-btn1 hover-btn3">Place Order</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -313,8 +152,160 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useCartStore } from '@/stores/cart';
+import { router } from '@inertiajs/vue3';
+import { toast } from 'vue3-toastify';
+
+const cart = useCartStore();
+const isProcessing = ref(false);
+const paymentMethod = ref('cod');
+const taxRate = 10; // 10% tax
+const shippingCost = 5; // Flat rate shipping
+
+const form = ref({
+    first_name: '',
+    last_name: '',
+    country: '',
+    address: '',
+    city: '',
+    postal_code: '',
+    phone: '',
+    email: '',
+    notes: ''
+});
+
+// Fetch cart items when component mounts
+onMounted(async () => {
+    await cart.fetchCartItems();
+});
+
+const taxAmount = computed(() => {
+    return (cart.cartTotal * taxRate) / 100;
+});
+
+const orderTotal = computed(() => {
+    return cart.cartTotal + taxAmount.value + shippingCost;
+});
+
+async function placeOrder() {
+    if (cart.items.length === 0) {
+        toast.error('Your cart is empty');
+        return;
+    }
+
+    isProcessing.value = true;
+    let toastId = toast.loading('Processing your order...');
+
+    try {
+        const orderData = {
+            ...form.value,
+            payment_method: paymentMethod.value,
+            items: cart.items.map(item => ({
+                product_id: item.product.id,
+                quantity: item.quantity,
+                price: item.price
+            })),
+            subtotal: cart.cartTotal,
+            tax: taxAmount.value,
+            shipping: shippingCost,
+            total: orderTotal.value
+        };
+
+        const response = await axios.post('/checkout', orderData);
+
+        // Explicit success check from server
+        if (!response.data.success) {
+            throw new Error(response.data.message || 'Order processing failed');
+        }
+        window.location.href = `/order-confirmation`;
+        // Update to success toast
+        toast.update(toastId, {
+            render: 'Order placed successfully!',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000
+        });
+
+        // Clear cart optimistically (don't await to prevent blocking)
+        const clearPromise = cart.clearCart().catch(e => {
+            console.error('Cart clear error:', e);
+            // Silently fail - order was still successful
+        });
+
+        // Redirect immediately with order ID
+        window.location.href = `/order-confirmation/${response.data.order_id}`;
+
+        // Wait for cart clear to complete (after redirect)
+        await clearPromise;
+
+    } catch (error) {
+        // Update existing toast to error state
+        toast.update(toastId, {
+            render: error.response?.data?.message || 
+                   error.response?.data?.errors ? 
+                   Object.values(error.response.data.errors).join(' ') :
+                   error.message || 'Failed to place order',
+            type: 'error',
+            isLoading: false,
+            autoClose: 5000
+        });
+
+        // Refresh cart state if needed
+        if (error.response?.status !== 401) {
+            await cart.fetchCartItems();
+        }
+    } finally {
+        isProcessing.value = false;
+    }
+}
 </script>
 
-<style  scoped>
+<style scoped>
+.quantity-counter {
+    display: flex;
+    align-items: center;
+}
 
+.quantity__input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.product-img img {
+    max-width: 80px;
+    height: auto;
+}
+
+.single-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.product-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-info {
+    flex-grow: 1;
+}
+
+button[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 10px;
+}
 </style>

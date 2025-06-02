@@ -51,20 +51,25 @@
                         <div class="price-area">
                             <p class="price">${{ product.price }} <del>${{ product.old_price }}</del></p>
                         </div>
-                        <div class="quantity-color-area">
+                                 <div class="quantity-color-area">
                             <div class="quantity-color">
                                 <h6 class="widget-title">Quantity</h6>
                                 <div class="quantity-counter">
-                                    <a href="#" class="quantity__minus"><i class='bx bx-minus'></i></a>
-                                    <input name="quantity" type="text" class="quantity__input" value="01">
-                                    <a href="#" class="quantity__plus"><i class='bx bx-plus'></i></a>
+                                    <button @click="decrementQuantity" class="quantity__minus">
+                                        <i class='bx bx-minus'></i>
+                                    </button>
+                                    <input name="quantity" type="text" class="quantity__input" v-model="quantity">
+                                    <button @click="incrementQuantity" class="quantity__plus">
+                                        <i class='bx bx-plus'></i>
+                                    </button>
                                 </div>
                             </div>
-                
                         </div>
+                        
                         <div class="shop-details-btn">
-                            <a href="#" class="primary-btn1 hover-btn3">*Add to Cart*</a>
-                            <a href="checkout.html" class="primary-btn1 style-3 hover-btn4">*Buy Now*</a>
+                            <button @click="addToCart" class="primary-btn1 hover-btn3">
+                                Add to Cart
+                            </button>
                         </div>
                         <div class="product-info">
                             <ul class="product-info-list">
@@ -142,9 +147,35 @@
 </template>
 
 <script setup>
-defineProps({
-    product:Object
-})
+import { ref } from 'vue';
+import { useCartStore } from '@/stores/cart';
+import { toast } from 'vue3-toastify';
+
+const props = defineProps({
+    product: Object
+});
+
+const cart = useCartStore();
+const quantity = ref(1);
+
+const incrementQuantity = () => {
+    quantity.value++;
+};
+
+const decrementQuantity = () => {
+    if (quantity.value > 1) {
+        quantity.value--;
+    }
+};
+
+const addToCart = async () => {
+    try {
+        await cart.addToCart(props.product.id, quantity.value);
+        toast.success('Product added to cart');
+    } catch (error) {
+        toast.error(error.message || 'Failed to add to cart');
+    }
+};
 </script>
 
 <style  scoped>

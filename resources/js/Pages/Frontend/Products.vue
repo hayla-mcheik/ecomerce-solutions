@@ -19,7 +19,7 @@ const props = defineProps({
   <Head title="Products" />
 
 <Breadcrumbs />
-<CategorySlider :categories="categories"/>
+<!-- <CategorySlider :categories="categories"/> -->
 <ListProducts :products="products" />
 
 </template>

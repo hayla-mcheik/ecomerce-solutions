@@ -21,7 +21,7 @@ createInertiaApp({
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
         let page = pages[`./Pages/${name}.vue`];
 
-        if (name.startsWith("Admin/")) {
+   if (name.startsWith("Admin/") || name.startsWith("User/")) {
             page.default.layout = AuthenticatedLayout;
         } else {
             page.default.layout = GuestLayout;

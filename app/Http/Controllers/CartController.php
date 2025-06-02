@@ -157,4 +157,41 @@ public function removeFromCart($cartId)
         'message' => 'Item removed from cart'
     ]);
 }
+public function clear()
+{
+    try {
+        // Delete all cart items for current user
+        $cart = Cart::where('user_id', auth()->id());
+      
+$cart->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart cleared successfully',
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to clear cart: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
+public function clearCart()
+{
+    try {
+        Cart::where('user_id', auth()->id())->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart cleared successfully',
+            'count' => 0
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to clear cart: ' . $e->getMessage()
+        ], 500);
+    }
+}
 }
